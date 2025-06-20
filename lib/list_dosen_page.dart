@@ -21,7 +21,7 @@ class _ListDosenPageState extends State<ListDosenPage> {
 
   Future<void> fetchData() async {
     setState(() => isLoading = true);
-    final response = await http.get(Uri.parse('http://192.168.176.234:8000/api/dosen'));
+    final response = await http.get(Uri.parse('http://192.168.72.234:8000/api/dosen'));
     if (response.statusCode == 200) {
       setState(() {
         dosenList = jsonDecode(response.body);
@@ -36,16 +36,36 @@ class _ListDosenPageState extends State<ListDosenPage> {
   }
 
   Future<void> deleteDosen(int no) async {
-    final response = await http.delete(Uri.parse('http://192.168.176.234:8000/api/dosen/$no'));
-    if (response.statusCode == 200) {
-      fetchData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Data berhasil dihapus')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal menghapus data')),
-      );
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Konfirmasi'),
+        content: Text('Apakah Anda yakin ingin menghapus data dosen ini?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Hapus', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final response = await http.delete(Uri.parse('http://192.168.72.234:8000/api/dosen/$no'));
+      if (response.statusCode == 200) {
+        fetchData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Data berhasil dihapus')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal menghapus data')),
+        );
+      }
     }
   }
 

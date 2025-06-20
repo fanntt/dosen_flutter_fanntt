@@ -18,7 +18,7 @@ class _TambahDosenPageState extends State<TambahDosenPage> {
   Future<void> _simpanData() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://192.168.176.234:8000/api/dosen'),
+        Uri.parse('http://192.168.72.234:8000/api/dosen'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nip': _nipController.text,

@@ -32,7 +32,7 @@ class _UpdateDosenPageState extends State<UpdateDosenPage> {
   Future<void> _updateData() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.put(
-        Uri.parse('http://192.168.176.234:8000/api/dosen/${widget.dosen['no']}'),
+        Uri.parse('http://192.168.72.234:8000/api/dosen/${widget.dosen['no']}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nip': _nipController.text,
